@@ -57,18 +57,16 @@ def check_exit():
 def win_message():
     global try_count
 
-    high_score()
+    win_popup = messagebox.askyesno('Congratulations!',f'You guessed the number and it took you {(try_count+1)} tries! Do you wish to play again?')
 
-    larry = messagebox.askyesno('Congratulations!',f'You guessed the number and it took you {(try_count+1)} tries! Do you wish to play again?')
-
-    if larry:
+    if win_popup:
         reset()
-    elif not larry:
-        garry = messagebox.askquestion('Exit','If you continue you will exit the program! Do you wish to proceed?')
+    elif not win_popup:
+        confirm_exit = messagebox.askquestion('Exit','If you continue you will exit the program! Do you wish to proceed?')
         
-        if garry == 'yes':
+        if confirm_exit == 'yes':
             check_exit()
-        elif garry == 'no':
+        elif confirm_exit == 'no':
             reset()
 
 def reset():
@@ -87,47 +85,17 @@ def reset():
     try_count = 0
     try_colour = 'green'
 
-def high_score():
-    global highest_score,high_score_lbl
-
-    with open('highscore.txt', 'w') as output_file:
-        text = str(try_count)
-        output_file.write(text)
-
-    if try_count < highest_score:
-        highest_score = (try_count + 1)
-
-    open_high_score()
-
-    tries.config(text=f'Tries: {try_count}',foreground=try_colour)
-    high_score_lbl.config(text=f'High Score: {highest_score}')
-
-def open_high_score():
-    global highest_score,high_score_lbl
-    with open('highscore.txt', 'r') as input_file:
-        text = input_file.read()
-        high_score_lbl.config(text=f'High Score: {text}')
-
-
 main_colour = '#2d162c'
 sec_colour = '#9775a6'
 btn_colour = '#683a68'
 style = 'Helvetica 20 bold'
 palette = 'https://lospec.com/palette-list/velvet-cherry-gb'
 
-dir = 'C:/Users/User/Documents/VSCode/TKinter/Guess_The_Number'
-
 screen = Tk()
 screen.title('Guess The Number')
 screen.geometry('300x250')
 screen.resizable(False, False)
 screen.configure(background=main_colour)
-
-high_score_lbl = Label(screen,text='',font='Tahoma 10 bold',background=main_colour,foreground=sec_colour)
-
-with open('highscore.txt', 'r') as input_file:
-    text = input_file.read()
-    high_score_lbl.config(text=f'High Score: {text}')
 
 difficulty = IntVar()
 highest_score = 200
@@ -153,9 +121,6 @@ enter_num.grid(column=2,row=5)
 
 tries = Label(screen,text=f'Tries: {try_count}',font='Tahoma 10 bold',background=main_colour,foreground=try_colour)
 tries.grid(column=2,row=6)
-
-high_score_lbl = Label(screen,text=f'High Score: {highest_score}',font='Tahoma 10 bold',background=main_colour,foreground=sec_colour)
-high_score_lbl.grid(column=2, row=7)
 
 uparrow = PhotoImage(file="uparrow_final.png")
 dnarrow = PhotoImage(file="downarrow_final.png")
